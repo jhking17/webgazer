@@ -10,7 +10,7 @@ app.use(express.static(__dirname + '/public'));
 app.set('views', __dirname + '/public/views');
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
-app.use(express.static(path.join(__dirname, 'public/index2_files')));
+app.use(express.static(path.join(__dirname, 'public/webgazer_files')));
 
 app.use(bodyParser.urlencoded({
     extended: true
@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
   
 app.get('/',function(req,res){
-    res.render("index2.html");
+    res.render("index.html");
 })
 
 const privateKey  = fs.readFileSync('private.pem', 'utf8');
