@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>WEB GAZER</title>
+        <script src="webgazer.js" type="text/javascript"></script>
+        <script src="clmtrackr.js" type="text/javascript"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    </head>
+    <body>
+        
+    </body>
+    <script type="text/javascript">
+        window.onload = function(){
+            function setupTracking() {
+                // var video = document.getElementById('webgazerVideoFeed');
+                // video.style.display = 'block';
+                // video.style.position = 'relative';
+                // video.style.top = '0px';
+                // video.style.left = '0px';
+                // video.style.right = '0px';
+                // video.width = imageWidth;
+                // video.height = imageHeight;
+                // video.style.margin = 'auto';
+    
+                imageWidth = "800px";
+                imageHeight = "600px";
+    
+                webgazer.params.imgWidth = imageWidth;
+                webgazer.params.imgHeight = imageHeight;
+    
+                var overlay = document.createElement('canvas');
+                overlay.id = 'overlay';
+                overlay.style.display = 'inline-block';
+                overlay.style.position = 'absolute';
+                overlay.width = imageWidth;
+                overlay.height = imageHeight;
+                overlay.style.top = '0px';
+                overlay.style.left = '0px';
+                overlay.style.right = '0px';
+                overlay.style.margin = 'auto';
+    
+                // $('body').append(overlay);
+                document.body.append(overlay)
+                
+                var cl = webgazer.getTracker().clm;
+    
+                function drawLoop() {
+                    console.log(webgazer.getPrediction());
+                    requestAnimFrame(drawLoop);
+                    overlay.getContext('2d').clearRect(0, 0, imageWidth, imageHeight);
+                    if (cl.getCurrentPosition()) {
+                        cl.draw(overlay);
+                    }
+                }
+    
+                drawLoop();
+            }
+            function checkIfTrackingReady() {
+                if (webgazer.isReady()) {
+                    setupTracking();
+                } else {
+                    setTimeout(checkIfTrackingReady, 100);
+                }
+            }
+    
+            checkIfTrackingReady();
+            window.ctracker = new clm.tracker();
+            ctracker.init();
+            webgazer.setRegression("ridge")
+                    .setTracker(ctracker)
+                    .setGazeListener(function(data, elapsedTime) {
+                        if (data == null) {
+                            return;
+                        }
+                        console.log('listener : ', data);
+                    })
+                    .begin()
+                    .showPredictionPoints(true);
+            var isSet = false;
+            function update(){
+                requestAnimationFrame(update);
+                if(!webgazer.isReady())
+                    return;
+                var positions = webgazer.getTracker().clm.getCurrentPosition();
+                var asd = webgazer.getCurrentPrediction();
+                console.log(positions,asd);
+            }
+            update();
+        }
+        
+    </script>
+    
+</html>

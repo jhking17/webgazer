@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<!-- saved from url=(0047)https://webgazer.cs.brown.edu/calibration.html? -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        
+        <title>WebGazer Demo</title>
+        <link rel="stylesheet" type="text/css" href="./index2_files/style.css">
+        <link rel="stylesheet" href="./index2_files/bootstrap.min.css">
+        <script async="" type="text/javascript" src="./index2_files/webgazer.js"></script>
+    </head>
+    <body lang="en-US" link="#0000ff" dir="LTR" class="">
+      <canvas id="plotting_canvas" width="966" height="748" style="cursor: crosshair; position: fixed;"></canvas>
+
+        <script src="./index2_files/jquery.min.js"></script>
+        <script src="./index2_files/sweetalert.min.js"></script>
+
+        <script src="./index2_files/main.js"></script>
+        <script src="./index2_files/calibration.js"></script>
+        <script src="./index2_files/precision_calculation.js"></script>
+        <script src="./index2_files/precision_store_points.js"></script>
+
+        <nav id="webgazerNavbar" class="navbar navbar-default navbar-fixed-top">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <!-- The hamburger menu button -->
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+              <ul class="nav navbar-nav">
+                <!-- Accuracy -->
+                <li id="Accuracy"><a>Not yet Calibrated</a></li>
+                <li onclick="Restart()"><a href="https://webgazer.cs.brown.edu/calibration.html?#">Recalibrate</a></li>
+              </ul>
+              <ul class="nav navbar-nav navbar-right">
+                <li><button class="helpBtn" data-toggle="modal" data-target="#helpModal"><a data-toggle="modal"><span class="glyphicon glyphicon-cog"></span> Help</a></button></li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+        <!-- Calibration points -->
+        <div class="calibrationDiv">
+            <input type="button" class="Calibration" id="Pt1" style="background-color: red; opacity: 0.2;">
+            <input type="button" class="Calibration" id="Pt2" style="background-color: yellow; opacity: 1;" disabled="">
+            <input type="button" class="Calibration" id="Pt3" style="background-color: yellow; opacity: 1;" disabled="">
+            <input type="button" class="Calibration" id="Pt4" style="background-color: red; opacity: 0.2;">
+            <input type="button" class="Calibration" id="Pt5" style="background-color: red; opacity: 0.2; display: none;">
+            <input type="button" class="Calibration" id="Pt6" style="background-color: red; opacity: 0.2;">
+            <input type="button" class="Calibration" id="Pt7" style="background-color: red; opacity: 0.2;">
+            <input type="button" class="Calibration" id="Pt8" style="background-color: red; opacity: 0.2;">
+            <input type="button" class="Calibration" id="Pt9" style="background-color: red; opacity: 0.2;">
+        </div>
+
+        <!-- Modal -->
+        <div id="helpModal" class="modal fade" role="dialog" style="display: none;">
+          <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-body">
+                <img src="./index2_files/calibration.png" width="100%" height="100%" alt="webgazer demo instructions">
+              </div>
+              <div class="modal-footer">
+                <button id="closeBtn" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="Restart()">Calibrate</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Latest compiled JavaScript -->
+        <script src="./index2_files/resize_canvas.js"></script>
+        <script src="./index2_files/bootstrap.min.js"></script>
+
+    
+
+<canvas width="11px" height="781px" id="renderCanvas" style="display:none;"></canvas>
+<canvas width="11px" height="781px" id="renderCanvas" style="display:none;"></canvas>
+<video id="webgazerVideoFeed" autoplay="" style="display: block; position: fixed; top: 0px; left: 0px; width: 320px; height: 240px;"></video>
+<canvas id="webgazerVideoCanvas" width="640" height="480" style="display: none;"></canvas>
+<canvas id="webgazerFaceOverlay" width="640" height="480" style="display: block; position: fixed; top: 0px; left: 0px; width: 320px; height: 240px;"></canvas>
+<canvas id="webgazerFaceFeedbackBox" style="display: block; position: fixed; border: solid green; top: 40.8px; left: 80.8px; width: 300px; height: 300px;"></canvas>
+<div id="webgazerGazeDot" style="display: block; position: fixed; z-index: 99999; left: -5px; top: -5px; background: red; border-radius: 100%; opacity: 0.7; width: 10px; height: 10px; transform: translate3d(821.5px, 237.5px, 0px);"></div><div class="swal-overlay" tabindex="-1">
+  <div class="swal-modal" role="dialog" aria-modal="true"><div class="swal-title" style="">Calibration</div>
+  <div class="swal-text" style="">Please click on each of the 9 points on the screen. You must click on each point 5 times till it goes yellow. This will calibrate your eye movements.</div>
+  <div class="swal-footer">
+    <div class="swal-button-container">
+
+    <button class="swal-button swal-button--confirm">OK</button>
+
+    <div class="swal-button__loader">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+
+  </div></div></div></div></body></html>
