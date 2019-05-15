@@ -10545,7 +10545,9 @@ function store_points(x, y, k) {
         leftVal = (pw - boxSize)/2;
 
         // top, left, width, height
-        return [topVal, leftVal, boxSize, boxSize]
+        //edit
+        return [0, 0, pw, ph]
+        //return [topVal, leftVal, boxSize, boxSize]
     }
 
     /**

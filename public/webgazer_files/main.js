@@ -8,11 +8,10 @@ window.onload = function() {
     Update();
     webgazer.setRegression('ridge')
         .setTracker('clmtrackr')
-        .setUserMediaVariable()
         .setGazeListener(function(data, clock) {
         })
         .begin()
-        .showPredictionPoints(false);
+        .showPredictionPoints(true);
 
 
     var setup = function() {
