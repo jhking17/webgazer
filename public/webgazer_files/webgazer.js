@@ -10448,10 +10448,10 @@ function store_points(x, y, k) {
     webgazer.params.faceFeedbackBoxId = 'webgazerFaceFeedbackBox';
     webgazer.params.gazeDotId = 'webgazerGazeDot'
     
-    webgazer.params.videoViewerWidth = 320;
-    webgazer.params.videoViewerHeight = 240;
+    webgazer.params.videoViewerWidth = 480;
+    webgazer.params.videoViewerHeight = 320;
 
-    webgazer.params.faceFeedbackBoxRatio = 0.66;
+    webgazer.params.faceFeedbackBoxRatio = 0.8;
 
     // View options
     webgazer.params.showVideo = true;
@@ -10822,7 +10822,7 @@ function store_points(x, y, k) {
         //third argument set to true so that we get event on 'capture' instead of 'bubbling'
         //this prevents a client using event.stopPropagation() preventing our access to the click
         document.addEventListener('click', clickListener, true);
-        document.addEventListener('mousemove', moveListener, true);
+        // document.addEventListener('mousemove', moveListener, true);
     };
 
     /**

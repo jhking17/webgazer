@@ -3,7 +3,14 @@ window.onload = function() {
         requestAnimationFrame(Update);
         if(!webgazer.isReady())
             return ;
-        console.log(webgazer.getCurrentPrediction());
+        let pos = webgazer.getCurrentPrediction();
+        if(pos !== null)
+            $("#now_pos")[0].innerText="x : "+pos.x+" y : "+pos.y;
+        else 
+            $("#now_pos")[0].innerText="Not connect";
+
+        console.log(webgazer.getRegression()); //data insert
+        // console.log(webgazer.getCurrentPrediction());
     }
     Update();
     webgazer.setRegression('ridge')
@@ -12,7 +19,7 @@ window.onload = function() {
         })
         .begin()
         .showPredictionPoints(true);
-
+    // store_points_variable();
 
     var setup = function() {
         var canvas = document.getElementById("plotting_canvas");
