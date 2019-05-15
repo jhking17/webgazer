@@ -46,32 +46,28 @@ $(document).ready(function(){
 
       var id = $(this).attr('id');
 
-      if (!CalibrationPoints[id]){ // initialises if not done
+      if (!CalibrationPoints[id]){
         CalibrationPoints[id]=0;
       }
-      CalibrationPoints[id]++; // increments values
+      CalibrationPoints[id]++;
 
-      if (CalibrationPoints[id]==5){ //only turn to yellow after 5 clicks
+      if (CalibrationPoints[id]==5){
         $(this).css('background-color','yellow');
-        $(this).prop('disabled', true); //disables the button
+        $(this).prop('disabled', true);
         PointCalibrate++;
       }else if (CalibrationPoints[id]<5){
-        //Gradually increase the opacity of calibration points when click to give some indication to user.
         var opacity = 0.2*CalibrationPoints[id]+0.2;
         $(this).css('opacity',opacity);
       }
 
-      //Show the middle calibration point after all other points have been clicked.
       if (PointCalibrate == 8){
         $("#Pt5").show();
       }
 
-      if (PointCalibrate >= 9){ // last point is calibrated
-            //using jquery to grab every element in Calibration class and hide them except the middle point.
+      if (PointCalibrate >= 9){
             $(".Calibration").hide();
             $("#Pt5").show();
 
-            // clears the canvas
             var canvas = document.getElementById("plotting_canvas");
             canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
 
