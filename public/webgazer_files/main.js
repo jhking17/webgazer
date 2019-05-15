@@ -9,7 +9,7 @@ window.onload = function() {
         else 
             $("#now_pos")[0].innerText="Not connect";
 
-        console.log(webgazer.getRegression()); //data insert
+        // console.log(webgazer.getRegression()); //data insert
         // console.log(webgazer.getCurrentPrediction());
     }
     Update();
