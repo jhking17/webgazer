@@ -10448,8 +10448,8 @@ function store_points(x, y, k) {
     webgazer.params.faceFeedbackBoxId = 'webgazerFaceFeedbackBox';
     webgazer.params.gazeDotId = 'webgazerGazeDot'
     
-    webgazer.params.videoViewerWidth = 480;
-    webgazer.params.videoViewerHeight = 320;
+    webgazer.params.videoViewerWidth = 900;
+    webgazer.params.videoViewerHeight = 600;
 
     webgazer.params.faceFeedbackBoxRatio = 0.8;
 
@@ -10546,8 +10546,8 @@ function store_points(x, y, k) {
 
         // top, left, width, height
         //edit
-        // return [0, 0, pw, pw]
-        return [topVal, leftVal, boxSize, boxSize]
+        return [0, 0, pw, ph]
+        // return [topVal, leftVal, boxSize, boxSize]
     }
 
     /**

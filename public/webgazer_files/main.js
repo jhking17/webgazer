@@ -1,4 +1,4 @@
-window.onload = function() {
+window.onload = async function() {
     function Update(){
         requestAnimationFrame(Update);
         if(!webgazer.isReady())
@@ -19,7 +19,7 @@ window.onload = function() {
         })
         .begin()
         .showPredictionPoints(true);
-    // store_points_variable();
+    store_points_variable();
 
     var setup = function() {
         var canvas = document.getElementById("plotting_canvas");
