@@ -11293,7 +11293,7 @@ function store_points(x, y, k) {
      */
     webgazer.recordScreenPosition = function(x, y) {
         // give this the same weight that a click gets.
-        recordScreenPosition(x, y, eventTypes[0]);
+        webgazer.recordScreenPosition(x, y, eventTypes[0]);
         return webgazer;
     };
 

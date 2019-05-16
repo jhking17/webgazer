@@ -1,0 +1,84 @@
+body {
+    min-width:600px!important;
+}
+.Calibration{
+    position : absolute;
+    display: block;
+    left : 50%;
+    top : 50%;
+}
+/* Calibration point position */
+.time{
+    display: none;
+    position : absolute;
+    font-size : 30px;
+    opacity: 0.7f;
+    color : blue;
+    top:25%;
+    left : 50%;
+}
+.point{
+    position : absolute;
+    display: none;
+    img{
+        width : 30px;
+        height : 30px;
+    }
+}
+.Pt1{
+    top: 20px;
+    left:20px;
+}
+.Pt5{
+    top: 20px;
+    left:25vw;
+    margin-left: 340;
+}
+.Pt2{
+    top: 20px;
+    right:2vw;
+}
+.Pt8{
+    top:50vh;
+    left:2vw;
+}
+.Pt13{
+    top: 50vh;
+    left: 50vw;
+}
+.Pt6{
+    top: 50vh;
+    right:2vw;
+}
+.Pt4{
+    bottom:2vw;
+    left: 2vw;
+}
+.Pt7{
+    bottom:2vw;
+    left:50vw;
+}
+.Pt3{
+    bottom:2vw;
+    right:2vw;
+}
+
+.pt9{
+    top : 25vh;
+    left : 50vw;
+}
+
+.pt10{
+    top : 50vh;
+    right : 25vw;
+}
+
+.pt11{
+    bottom : 25vh;
+    left : 50vw;
+}
+
+.pt12{
+    top : 50vh;
+    left : 25vw;
+}

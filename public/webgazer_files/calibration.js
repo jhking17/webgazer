@@ -1,144 +1,77 @@
-var PointCalibrate = 0;
-var CalibrationPoints={};
+var PointCalibrate = 2;
+var EyeCheckTime = 4;
+var isCheck = false;
 
-/**
- * Clear the canvas and the calibration button.
- */
 function ClearCanvas(){
   $(".Calibration").hide();
   var canvas = document.getElementById("plotting_canvas");
   canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
 }
 
-/**
- * Show the instruction of using calibration at the start up screen.
- */
-function PopUpInstruction(){
-  ClearCanvas();
+function swalPopupWithMessage(msg,func){
   swal({
-    title:"Calibration",
-    text: "Please click on each of the 9 points on the screen. You must click on each point 5 times till it goes yellow. This will calibrate your eye movements.",
+    title:"JUHO TEST",
+    text: msg,
     buttons:{
       cancel: false,
       confirm: true
     }
-  }).then(isConfirm => {
-    ShowCalibrationPoint();
-  });
-
-}
-/**
-  * Show the help instructions right at the start.
-  */
-function helpModalShow() {
-    $('#helpModal').modal('show');
+  }).then(isConfirm =>{func(isConfirm)});
 }
 
-/**
- * Load this function when the index page starts.
-* This function listens for button clicks on the html page
-* checks that all buttons have been clicked 5 times each, and then goes on to measuring the precision
-*/
+function offset(el) {
+  var rect = el.getBoundingClientRect(),
+  scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
+  scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  return { top: rect.top + scrollTop, left: rect.left + scrollLeft }
+}
+
+function ShowCheckDot(){
+  isCheck = true;
+  $(".time")[0].innerText = EyeCheckTime;
+  let interval = setInterval(() => {
+    EyeCheckTime -= 1;
+    $(".time")[0].innerText = EyeCheckTime;
+  }, 1000);
+  setTimeout(() => {
+    clearInterval(interval);
+    EyeCheckTime = 5;
+    $(".time")[0].innerText = EyeCheckTime;
+    $(`.Pt${PointCalibrate}`)[0].style="display: none;";
+    PointCalibrate += 1;
+    isCheck = false;
+  }, EyeCheckTime * 1000);
+}
 $(document).ready(function(){
   ClearCanvas();
-  helpModalShow();
-     $(".Calibration").click(function(){ // click event on the calibration buttons
-
-      var id = $(this).attr('id');
-
-      if (!CalibrationPoints[id]){
-        CalibrationPoints[id]=0;
-      }
-      CalibrationPoints[id]++;
-
-      if (CalibrationPoints[id]==5){
-        $(this).css('background-color','yellow');
-        $(this).prop('disabled', true);
-        PointCalibrate++;
-      }else if (CalibrationPoints[id]<5){
-        var opacity = 0.2*CalibrationPoints[id]+0.2;
-        $(this).css('opacity',opacity);
+  $(".Calibration")[0].style="display:block;";
+  $(".Calibration").click(function(){
+    function UpdateCalibration(){
+      requestAnimationFrame(UpdateCalibration);
+      if(isCheck){
+        $(`.Pt${PointCalibrate}`)[0].style="display: block;";
+        $(".time")[0].style="display: block";
+      } else if(PointCalibrate !== 14){
+        ShowCheckDot();
+      } else {
+        $(".Calibration")[0].innerText = "Calibration END!!";
       }
 
-      if (PointCalibrate == 8){
-        $("#Pt5").show();
+      if(isCheck && EyeCheckTime < 4 && EyeCheckTime > 2){
+        var nowPoint = $($(`.Pt${PointCalibrate}`)[0]).offset();
+        webgazer.recordScreenPosition(parseInt(nowPoint.left), parseInt(nowPoint.top),'click');
       }
-
-      if (PointCalibrate >= 9){
-            $(".Calibration").hide();
-            $("#Pt5").show();
-
-            var canvas = document.getElementById("plotting_canvas");
-            canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
-
-            // notification for the measurement process
-            swal({
-              title: "Calculating measurement",
-              text: "Please don't move your mouse & stare at the middle dot for the next 5 seconds. This will allow us to calculate the accuracy of our predictions.",
-              closeOnEsc: false,
-              allowOutsideClick: false,
-              closeModal: true
-            }).then( isConfirm => {
-
-                // makes the variables true for 5 seconds & plots the points
-                $(document).ready(function(){
-
-                  store_points_variable(); // start storing the prediction points
-
-                  sleep(5000).then(() => {
-                      stop_storing_points_variable(); // stop storing the prediction points
-                      var past50 = get_points() // retrieve the stored points
-                      console.log(past50);
-                      var precision_measurement = calculatePrecision(past50);
-                      var accuracyLabel = "<a>Accuracy | "+precision_measurement+"%</a>";
-                      document.getElementById("Accuracy").innerHTML = accuracyLabel; // Show the accuracy in the nav bar.
-                      swal({
-                        title: "Your accuracy measure is " + precision_measurement + "%",
-                        allowOutsideClick: false,
-                        buttons: {
-                          cancel: "Recalibrate",
-                          confirm: true,
-                        }
-                      }).then(isConfirm => {
-                          if (isConfirm){
-                            //clear the calibration & hide the last middle button
-                            ClearCanvas();
-                          } else {
-                            //use restart function to restart the calibration
-                            ClearCalibration();
-                            ClearCanvas();
-                            ShowCalibrationPoint();
-                          }
-                      });
-                  });
-                });
-            });
-          }
-    });
+    }
+    UpdateCalibration();
+  });
 });
 
-/**
- * Show the Calibration Points
- */
-function ShowCalibrationPoint() {
-  $(".Calibration").show();
-  $("#Pt5").hide(); // initially hides the middle button
-}
-
-/**
-* This function clears the calibration buttons memory
-*/
 function ClearCalibration(){
   window.localStorage.clear();
-  $(".Calibration").css('background-color','red');
-  $(".Calibration").css('opacity',0.2);
-  $(".Calibration").prop('disabled',false);
 
-  CalibrationPoints = {};
-  PointCalibrate = 0;
+  PointCalibrate = 2;
 }
 
-// sleep function because java doesn't have one, sourced from http://stackoverflow.com/questions/951021/what-is-the-javascript-version-of-sleep
 function sleep (time) {
   return new Promise((resolve) => setTimeout(resolve, time));
 }
