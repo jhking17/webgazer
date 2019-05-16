@@ -10821,7 +10821,8 @@ function store_points(x, y, k) {
     var addMouseEventListeners = function() {
         //third argument set to true so that we get event on 'capture' instead of 'bubbling'
         //this prevents a client using event.stopPropagation() preventing our access to the click
-        document.addEventListener('click', clickListener, true);
+        //edit
+        // document.addEventListener('click', clickListener, true);
         // document.addEventListener('mousemove', moveListener, true);
     };
 

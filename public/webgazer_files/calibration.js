@@ -46,8 +46,9 @@ $(document).ready(function(){
   ClearCanvas();
   $(".Calibration")[0].style="display:block;";
   $(".Calibration").click(function(){
+    ClearCalibration();
     function UpdateCalibration(){
-      requestAnimationFrame(UpdateCalibration);
+      // requestAnimationFrame(UpdateCalibration);
       if(isCheck){
         $(`.Pt${PointCalibrate}`)[0].style="display: block;";
         $(".time")[0].style="display: block";
@@ -58,12 +59,13 @@ $(document).ready(function(){
         store_points_variable();
       }
 
-      if(isCheck && EyeCheckTime < 4 && EyeCheckTime > 2){
+      if(isCheck && EyeCheckTime < 3 && EyeCheckTime > 1){
         var nowPoint = $($(`.Pt${PointCalibrate}`)[0]).offset();
+        console.log('now check ! : ',nowPoint);
         webgazer.recordScreenPosition(parseInt(nowPoint.left), parseInt(nowPoint.top),'click');
       }
     }
-    UpdateCalibration();
+    setInterval(UpdateCalibration, 500);
   });
 });
 
@@ -71,6 +73,7 @@ function ClearCalibration(){
   window.localStorage.clear();
 
   PointCalibrate = 2;
+  EyeCheckTime = 4;
 }
 
 function sleep (time) {
