@@ -55,6 +55,7 @@ $(document).ready(function(){
         ShowCheckDot();
       } else {
         $(".Calibration")[0].innerText = "Calibration END!!";
+        store_points_variable();
       }
 
       if(isCheck && EyeCheckTime < 4 && EyeCheckTime > 2){
