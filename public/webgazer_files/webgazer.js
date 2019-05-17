@@ -10447,9 +10447,13 @@ function store_points(x, y, k) {
     webgazer.params.faceOverlayId = 'webgazerFaceOverlay';
     webgazer.params.faceFeedbackBoxId = 'webgazerFaceFeedbackBox';
     webgazer.params.gazeDotId = 'webgazerGazeDot'
-    
-    webgazer.params.videoViewerWidth = 480;
-    webgazer.params.videoViewerHeight = 320;
+    if(window.mobilecheck && mobilecheck()){
+      webgazer.params.videoViewerWidth = 900;
+      webgazer.params.videoViewerHeight = 600;
+    } else {
+      webgazer.params.videoViewerWidth = 320;
+      webgazer.params.videoViewerHeight = 240;
+    }
 
     webgazer.params.faceFeedbackBoxRatio = 0.8;
 
@@ -10461,7 +10465,8 @@ function store_points(x, y, k) {
 
     //Params to clmtrackr and getUserMedia constraints
     webgazer.params.clmParams = webgazer.params.clmParams || {useWebGL : true};
-    webgazer.params.camConstraints = webgazer.params.camConstraints || { video: { width: { min: 320, ideal: 640, max: 1920 }, height: { min: 240, ideal: 480, max: 1080 }, facingMode: "user" } };
+    //edit
+    webgazer.params.camConstraints = webgazer.params.camConstraints || { video: { width: { min: 320, ideal: 640, max: 640 }, height: { min: 240, ideal: 480, max: 480 }, facingMode: "user" } };
 
     webgazer.params.smoothEyeBB = webgazer.params.smoothEyeBB || false;
     webgazer.params.blinkDetectionOn = webgazer.params.blinkDetectionOn || false;

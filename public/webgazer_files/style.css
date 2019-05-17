@@ -26,8 +26,8 @@ body {
 }
 
 .point img {
-  width: 30px;
-  height: 30px;
+  width: 60px;
+  height: 60px;
 }
 
 .Pt1 {
@@ -36,9 +36,8 @@ body {
 }
 
 .Pt5 {
-  top: 20px;
-  left: 25vw;
-  margin-left: 340;
+  top: 2vh;
+  left: 50vw;
 }
 
 .Pt2 {
@@ -94,5 +93,45 @@ body {
 .pt12 {
   top: 50vh;
   left: 25vw;
+}
+
+.pt13 {
+  top: 25vh;
+  left: 25vw;
+}
+
+.pt14 {
+  top: 25vh;
+  right: 25vw;
+}
+
+.pt15 {
+  bottom: 25vh;
+  left: 25vw;
+}
+
+.pt16 {
+  bottom: 25vh;
+  right: 25vw;
+}
+
+.pt17 {
+  top: 50vh;
+  left: 25vw;
+}
+
+.circle {
+  display: block;
+  position: absolute;
+  background-color: gray;
+  opacity: 0.5f;
+  border: 1px solid white;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  left: 0;
+  top: 0;
+  -webkit-transition: all 2s ease-out;
+  transition: all 2s ease-out;
 }
 /*# sourceMappingURL=style.css.map */

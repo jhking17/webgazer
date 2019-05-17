@@ -1,6 +1,8 @@
-var PointCalibrate = 2;
+var PointCalibrate = 1;
 var EyeCheckTime = 4;
 var isCheck = false;
+var endCalibration = false;
+var pointList = [];
 
 function ClearCanvas(){
   $(".Calibration").hide();
@@ -48,31 +50,59 @@ $(document).ready(function(){
   $(".Calibration").click(function(){
     ClearCalibration();
     function UpdateCalibration(){
-      // requestAnimationFrame(UpdateCalibration);
+      requestAnimationFrame(UpdateCalibration);
       if(isCheck){
         $(`.Pt${PointCalibrate}`)[0].style="display: block;";
         $(".time")[0].style="display: block";
-      } else if(PointCalibrate !== 14){
+      } else if(PointCalibrate !== 17){
         ShowCheckDot();
       } else {
         $(".Calibration")[0].innerText = "Calibration END!!";
-        store_points_variable();
+        endCalibration = true;
+        // store_points_variable();
       }
 
       if(isCheck && EyeCheckTime < 3 && EyeCheckTime > 1){
         var nowPoint = $($(`.Pt${PointCalibrate}`)[0]).offset();
-        console.log('now check ! : ',nowPoint);
         webgazer.recordScreenPosition(parseInt(nowPoint.left), parseInt(nowPoint.top),'click');
       }
     }
-    setInterval(UpdateCalibration, 500);
+    UpdateCalibration();
+    
+    function UpdateEyeCircle(){
+      requestAnimationFrame(UpdateEyeCircle);
+      if(endCalibration){
+        let pos = webgazer.getCurrentPrediction();
+        if(pos !== null){
+          pointList.push(pos);
+          if(pointList.length === 3){
+            let avg_x = 0;
+            let avg_y = 0;
+            for(var i=0;i<3;i++){
+              avg_x += pointList[i].x;
+              avg_y += pointList[i].y;
+            }
+            avg_x = parseFloat(avg_x / 3).toFixed(3);
+            avg_y = parseFloat(avg_y / 3).toFixed(3);
+            let EyeCircle = $("#eyeCircle")[0];
+            EyeCircle.style.top = avg_y;
+            EyeCircle.style.left = avg_x;
+            pointList = [];
+            console.log(avg_x,avg_y);
+          }
+        }
+      }
+
+      // move circle with eye position
+    }
+    UpdateEyeCircle();
   });
 });
 
 function ClearCalibration(){
   window.localStorage.clear();
-
-  PointCalibrate = 2;
+  endCalibration = false;
+  PointCalibrate = 1;
   EyeCheckTime = 4;
 }
 
