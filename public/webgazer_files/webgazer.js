@@ -10467,7 +10467,7 @@ function store_points(x, y, k) {
     //Params to clmtrackr and getUserMedia constraints
     webgazer.params.clmParams = webgazer.params.clmParams || {useWebGL : true};
     //editjh
-    webgazer.params.camConstraints = webgazer.params.camConstraints || { video: { width: { min: 320, ideal: 640, max: 640 }, height: { min: 240, ideal: 480, max: 480 }, facingMode: "user" } };
+    webgazer.params.camConstraints = webgazer.params.camConstraints || { video: { width: { min: 320, ideal: 640, max: 1280 }, height: { min: 240, ideal: 480, max: 960 }, facingMode: "user" } };
 
     webgazer.params.smoothEyeBB = webgazer.params.smoothEyeBB || false;
     webgazer.params.blinkDetectionOn = webgazer.params.blinkDetectionOn || false;
