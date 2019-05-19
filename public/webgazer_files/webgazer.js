@@ -10451,7 +10451,7 @@ function store_points(x, y, k) {
     if(window.mobilecheck && mobilecheck()){
       webgazer.params.videoViewerWidth = 600;
       webgazer.params.videoViewerHeight = 400;
-      webgazer.params.faceFeedbackBoxRatio = 0.66;
+      webgazer.params.faceFeedbackBoxRatio = 0.8;
     } else {
       webgazer.params.videoViewerWidth = 320;
       webgazer.params.videoViewerHeight = 240;
