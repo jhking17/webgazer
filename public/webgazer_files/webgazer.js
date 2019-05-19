@@ -1025,8 +1025,8 @@ var objectdetect = (function() {
     var resizeCanvas_ = function() {
       width = element.offsetWidth;
       height = element.offsetHeight;
-      canvas.width = width;
-      canvas.height = height;
+      canvas.width = width / 2; //editjh
+      canvas.height = height / 2; //this is calculate canvas / 2
     };
     resizeCanvas_();
     element.addEventListener('resize', resizeCanvas_);
@@ -10465,7 +10465,7 @@ function store_points(x, y, k) {
 
     //Params to clmtrackr and getUserMedia constraints
     webgazer.params.clmParams = webgazer.params.clmParams || {useWebGL : true};
-    //edit
+    //editjh
     webgazer.params.camConstraints = webgazer.params.camConstraints || { video: { width: { min: 320, ideal: 640, max: 640 }, height: { min: 240, ideal: 480, max: 480 }, facingMode: "user" } };
 
     webgazer.params.smoothEyeBB = webgazer.params.smoothEyeBB || false;
