@@ -10447,15 +10447,16 @@ function store_points(x, y, k) {
     webgazer.params.faceOverlayId = 'webgazerFaceOverlay';
     webgazer.params.faceFeedbackBoxId = 'webgazerFaceFeedbackBox';
     webgazer.params.gazeDotId = 'webgazerGazeDot'
+    //editjh
     if(window.mobilecheck && mobilecheck()){
       webgazer.params.videoViewerWidth = 600;
       webgazer.params.videoViewerHeight = 400;
+      webgazer.params.faceFeedbackBoxRatio = 1;
     } else {
       webgazer.params.videoViewerWidth = 320;
       webgazer.params.videoViewerHeight = 240;
+      webgazer.params.faceFeedbackBoxRatio = 0.66;
     }
-
-    webgazer.params.faceFeedbackBoxRatio = 0.8;
 
     // View options
     webgazer.params.showVideo = true;
@@ -10550,9 +10551,10 @@ function store_points(x, y, k) {
         leftVal = (pw - boxSize)/2;
 
         // top, left, width, height
-        //edit
-        // return [0, 0, pw, ph]
-        return [topVal, leftVal, boxSize, boxSize]
+        //editjh
+        if(window.mobilecheck && mobilecheck())
+          return [0, 0, pw, ph];
+        return [topVal, leftVal, boxSize, boxSize];
     }
 
     /**
