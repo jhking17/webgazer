@@ -10468,7 +10468,7 @@ function store_points(x, y, k) {
     webgazer.params.clmParams = webgazer.params.clmParams || {useWebGL : true};
     //editjh
     if(window.mobilecheck && mobilecheck()){
-      webgazer.params.camConstraints = webgazer.params.camConstraints || { video: {facingMode: "user" } };
+      webgazer.params.camConstraints = webgazer.params.camConstraints || { video: { width: { min: 100, ideal: 3200, max: 3200 }, height: { min: 100, ideal: 2400, max: 2400 }, facingMode: "user" } };
     } else 
       webgazer.params.camConstraints = webgazer.params.camConstraints || { video: { width: { min: 320, ideal: 640, max: 1280 }, height: { min: 240, ideal: 480, max: 960 }, facingMode: "user" } };
 
