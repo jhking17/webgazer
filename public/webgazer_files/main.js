@@ -38,6 +38,12 @@ window.onload = async function() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
         canvas.style.position = 'fixed';
+        // if(mobilecheck()){
+        //     webgazer.showVideo(false);
+        //     webgazer.showFaceOverlay(false);
+        //     webgazer.showFaceFeedbackBox(false);
+        //     webgazer.showPredictionPoints(false);
+        // }
     };
 
     function checkIfReady() {
