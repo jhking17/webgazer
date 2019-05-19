@@ -10449,9 +10449,9 @@ function store_points(x, y, k) {
     webgazer.params.gazeDotId = 'webgazerGazeDot'
     //editjh
     if(window.mobilecheck && mobilecheck()){
-      webgazer.params.videoViewerWidth = 160;
-      webgazer.params.videoViewerHeight = 120;
-      webgazer.params.faceFeedbackBoxRatio = 1;
+      webgazer.params.videoViewerWidth = 760;
+      webgazer.params.videoViewerHeight = 570;
+      webgazer.params.faceFeedbackBoxRatio = 0.66;
     } else {
       webgazer.params.videoViewerWidth = 320;
       webgazer.params.videoViewerHeight = 240;
