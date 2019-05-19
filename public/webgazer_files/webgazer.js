@@ -10451,7 +10451,7 @@ function store_points(x, y, k) {
     if(window.mobilecheck && mobilecheck()){
       webgazer.params.videoViewerWidth = 760;
       webgazer.params.videoViewerHeight = 570;
-      webgazer.params.faceFeedbackBoxRatio = 0.66;
+      webgazer.params.faceFeedbackBoxRatio = 1;
     } else {
       webgazer.params.videoViewerWidth = 320;
       webgazer.params.videoViewerHeight = 240;
@@ -10552,7 +10552,8 @@ function store_points(x, y, k) {
 
         // top, left, width, height
         //editjh
-        // return [0, 0, pw, ph];
+        if(window.mobilecheck && mobilecheck())
+          return [0, 0, pw, ph];
         return [topVal, leftVal, boxSize, boxSize];
     }
 
