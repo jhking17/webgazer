@@ -10888,7 +10888,7 @@ function store_points(x, y, k) {
         videoElement.srcObject = videoStream; 
         videoElement.autoplay = true;
         videoElement.style.display = webgazer.params.showVideo ? 'block' : 'none';
-        videoElement.style.position = 'fixed';
+        videoElement.style.position = 'absolute';
         videoElement.style.top = topDist;
         videoElement.style.left = leftDist;
         // We set these to stop the video appearing too large when it is added for the very first time
