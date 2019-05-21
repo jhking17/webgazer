@@ -40,9 +40,15 @@ window.onload = async function() {
         canvas.style.position = 'fixed';
         var camConstraints = null;
         if(window.mobilecheck && mobilecheck()){
-            camConstraints = { video: {width: {min: 480 }, height: {min: 480 },facingMode: "user" }};
+            camConstraints = { video: {width: {min: 480 }, height: {min: 480 }, facingMode: "user" }};
           } else 
             camConstraints = { video: { width: { min: 320,max: 640 }, height: { min: 240,max: 480 }, facingMode: "user" } };
+        console.log(webgazer.setCameraConstraints,camConstraints);
+        if(window.mobilecheck && mobilecheck()){
+            webgazer.setVideoViewerSize(760,570);
+        } else {
+            webgazer.setVideoViewerSize(320,240);
+        }
         webgazer.setCameraConstraints(camConstraints);
         // if(mobilecheck()){
         //     webgazer.showVideo(false);

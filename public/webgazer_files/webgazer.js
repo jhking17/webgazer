@@ -10448,16 +10448,10 @@ function store_points(x, y, k) {
     webgazer.params.faceFeedbackBoxId = 'webgazerFaceFeedbackBox';
     webgazer.params.gazeDotId = 'webgazerGazeDot'
     //editjh
-    if(window.mobilecheck && mobilecheck()){
-      webgazer.params.videoViewerWidth = 760;
-      webgazer.params.videoViewerHeight = 570;
-      webgazer.params.faceFeedbackBoxRatio = 0.9;
-    } else {
-      webgazer.params.videoViewerWidth = 320;
-      webgazer.params.videoViewerHeight = 240;
+    if(window.mobilecheck && mobilecheck())
       webgazer.params.faceFeedbackBoxRatio = 0.8;
-    }
-
+    else
+      webgazer.params.faceFeedbackBoxRatio = 0.66;
     // View options
     webgazer.params.showVideo = true;
     webgazer.params.showFaceOverlay = true;
