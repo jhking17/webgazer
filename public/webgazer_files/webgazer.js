@@ -10449,7 +10449,7 @@ function store_points(x, y, k) {
     webgazer.params.gazeDotId = 'webgazerGazeDot'
     //editjh
     if(window.mobilecheck && mobilecheck())
-      webgazer.params.faceFeedbackBoxRatio = 0.8;
+      webgazer.params.faceFeedbackBoxRatio = 1;
     else
       webgazer.params.faceFeedbackBoxRatio = 0.66;
     // View options
@@ -10546,6 +10546,8 @@ function store_points(x, y, k) {
 
         // top, left, width, height
         //editjh
+        if(window.mobilecheck && mobilecheck())
+          return [0, 0, ph, ph]
         return [topVal, leftVal, boxSize, boxSize];
     }
 
