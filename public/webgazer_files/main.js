@@ -44,12 +44,16 @@ window.onload = async function() {
           } else 
             camConstraints = { video: { width: { min: 320,max: 640 }, height: { min: 240,max: 480 }, facingMode: "user" } };
         console.log(webgazer.setCameraConstraints,camConstraints);
+        webgazer.pause();
         if(window.mobilecheck && mobilecheck()){
             webgazer.setVideoViewerSize(760,570);
         } else {
             webgazer.setVideoViewerSize(320,240);
         }
         webgazer.setCameraConstraints(camConstraints);
+        setTimeout(() => {
+            webgazer.resume();
+        }, 1000);
         // if(mobilecheck()){
         //     webgazer.showVideo(false);
         //     webgazer.showFaceOverlay(false);
