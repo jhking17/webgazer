@@ -38,6 +38,12 @@ window.onload = async function() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
         canvas.style.position = 'fixed';
+        var camConstraints = null;
+        if(window.mobilecheck && mobilecheck()){
+            camConstraints = { video: {width: {max: 3000 }, height: {max: 3000 },facingMode: "user" }};
+          } else 
+            camConstraints = { video: { width: { min: 320,max: 640 }, height: { min: 240,max: 480 }, facingMode: "user" } };
+        webgazer.setCameraConstraints(camConstraints);
         // if(mobilecheck()){
         //     webgazer.showVideo(false);
         //     webgazer.showFaceOverlay(false);
