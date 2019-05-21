@@ -40,7 +40,7 @@ window.onload = async function() {
         canvas.style.position = 'fixed';
         var camConstraints = null;
         if(window.mobilecheck && mobilecheck()){
-            camConstraints = { video: {width: {max: 3000 }, height: {max: 3000 },facingMode: "user" }};
+            camConstraints = { video: {width: {min: 480 }, height: {min: 480 },facingMode: "user" }};
           } else 
             camConstraints = { video: { width: { min: 320,max: 640 }, height: { min: 240,max: 480 }, facingMode: "user" } };
         webgazer.setCameraConstraints(camConstraints);
