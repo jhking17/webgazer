@@ -88,7 +88,6 @@ $(document).ready(function(){
             EyeCircle.style.top = avg_y;
             EyeCircle.style.left = avg_x;
             pointList = [];
-            console.log(avg_x,avg_y);
           }
         }
       }
