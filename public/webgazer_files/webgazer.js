@@ -1025,8 +1025,12 @@ var objectdetect = (function() {
     var resizeCanvas_ = function() {
       width = element.offsetWidth;
       height = element.offsetHeight;
-      canvas.width = width * 1.5; //editjh
-      canvas.height = height * 1.5; //this is calculate canvas / 2
+      canvas.width = width;
+      canvas.height = height;
+      if(window.mobilecheck && mobilecheck()){
+        canvas.width *= 2; //editjh
+        canvas.height *= 2; //this is calculate canvas / 2
+      }
     };
     resizeCanvas_();
     element.addEventListener('resize', resizeCanvas_);
@@ -4731,7 +4735,7 @@ var clm = {
     if (!params) params = {};
 		if (params.constantVelocity === undefined) params.constantVelocity = true;
     //editjh clmtrackr
-		if (params.searchWindow === undefined) params.searchWindow = 6;
+		if (params.searchWindow === undefined) params.searchWindow = 11;
 		if (params.useWebGL === undefined) params.useWebGL = true;
 		if (params.scoreThreshold === undefined) params.scoreThreshold = 0.5;
 		if (params.stopOnConvergence === undefined) params.stopOnConvergence = false;
@@ -10448,7 +10452,7 @@ function store_points(x, y, k) {
     webgazer.params.gazeDotId = 'webgazerGazeDot'
     //editjh
     if(window.mobilecheck && mobilecheck())
-      webgazer.params.faceFeedbackBoxRatio = 1;
+      webgazer.params.faceFeedbackBoxRatio = 0.8;
     else
       webgazer.params.faceFeedbackBoxRatio = 0.66;
     // View options
@@ -10546,8 +10550,8 @@ function store_points(x, y, k) {
 
         // top, left, width, height
         //editjh
-        if(window.mobilecheck && mobilecheck())
-          return [0, 0, ph, ph]
+        // if(window.mobilecheck && mobilecheck())
+        //   return [0, leftVal, boxsize, boxsize]
         return [topVal, leftVal, boxSize, boxSize];
     }
 
