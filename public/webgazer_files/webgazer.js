@@ -923,7 +923,6 @@ var objectdetect = (function() {
     if (!tracker) {
       throw new Error('Tracker not specified, try `tracking.track(element, new tracking.FaceTracker())`.');
     }
-
     switch (element.nodeName.toLowerCase()) {
       case 'canvas':
         return this.trackCanvas_(element, tracker, opt_options);
@@ -8139,7 +8138,6 @@ var mosseFilterResponses = function() {
      * @return {Object} the two eye-patches, first left, then right eye
      */
     ClmGaze.prototype.getEyePatches = function(imageCanvas, width, height) {
-
         if (imageCanvas.width === 0) {
             return null;
         }

@@ -45,7 +45,7 @@ window.onload = async function() {
             camConstraints = { video: { width: { min: 320,max: 640 }, height: { min: 240,max: 480 }, facingMode: "user" } };
         webgazer.pause();
         if(window.mobilecheck && mobilecheck()){
-            webgazer.setVideoViewerSize(640,480);
+            webgazer.setVideoViewerSize(1200,800);
         } else {
             webgazer.setVideoViewerSize(320,240);
         }
