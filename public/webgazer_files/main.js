@@ -45,13 +45,14 @@ window.onload = async function() {
             camConstraints = { video: { width: { min: 320,max: 640 }, height: { min: 240,max: 480 }, facingMode: "user" } };
         webgazer.pause();
         if(window.mobilecheck && mobilecheck()){
-            webgazer.setVideoViewerSize(1200,800);
+            webgazer.setVideoViewerSize(480, 640);
         } else {
             webgazer.setVideoViewerSize(320,240);
         }
         webgazer.setCameraConstraints(camConstraints);
         setTimeout(() => {
             webgazer.resume();
+            // webgazer.showVideo(false);
         }, 1000);
         // if(mobilecheck()){
         //     webgazer.showVideo(false);
