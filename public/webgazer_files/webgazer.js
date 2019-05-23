@@ -1025,8 +1025,8 @@ var objectdetect = (function() {
     var resizeCanvas_ = function() {
       width = element.offsetWidth;
       height = element.offsetHeight;
-      canvas.width = width / 2; //editjh
-      canvas.height = height / 2; //this is calculate canvas / 2
+      canvas.width = width * 1.5; //editjh
+      canvas.height = height * 1.5; //this is calculate canvas / 2
     };
     resizeCanvas_();
     element.addEventListener('resize', resizeCanvas_);
@@ -4727,10 +4727,10 @@ var pModel = {
 //requires: ccv.js, numeric.js
 
 var clm = {
-	tracker : function(params) {
-
-		if (!params) params = {};
+  tracker : function(params) {
+    if (!params) params = {};
 		if (params.constantVelocity === undefined) params.constantVelocity = true;
+    //editjh clmtrackr
 		if (params.searchWindow === undefined) params.searchWindow = 6;
 		if (params.useWebGL === undefined) params.useWebGL = true;
 		if (params.scoreThreshold === undefined) params.scoreThreshold = 0.5;
@@ -4825,7 +4825,6 @@ var clm = {
 		this.init = function(pdmmodel) {
 
 			model = pdmmodel;
-
 			// load from model
 			patchType = model.patchModel.patchType;
 			numPatches = model.patchModel.numPatches;
