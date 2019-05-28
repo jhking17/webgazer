@@ -10754,6 +10754,7 @@ function store_points(x, y, k) {
                 var pred = webgazer.util.bound({'x':x/len, 'y':y/len});
 
                 if (store_points_var) {
+                   //editjh
                     drawCoordinates('blue',pred.x,pred.y); //draws the previous predictions
                     //store the position of the past fifty occuring tracker preditions
                     store_points(pred.x, pred.y, k);

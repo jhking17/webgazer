@@ -16,11 +16,11 @@ window.onload = async function() {
         requestAnimationFrame(Update);
         if(!webgazer.isReady())
             return ;
-        let pos = webgazer.getCurrentPrediction();
-        if(pos !== null)
-            $("#now_pos")[0].innerText="x : "+pos.x+" y : "+pos.y;
-        else 
-            $("#now_pos")[0].innerText="Not connect";
+        // let pos = webgazer.getCurrentPrediction();
+        // if(pos !== null)
+        //     $("#now_pos")[0].innerText="x : "+pos.x+" y : "+pos.y;
+        // else 
+        //     $("#now_pos")[0].innerText="Not connect";
 
         // console.log(webgazer.getRegression()); //data insert
         // console.log(webgazer.getCurrentPrediction());
@@ -52,6 +52,7 @@ window.onload = async function() {
         webgazer.setCameraConstraints(camConstraints);
         setTimeout(() => {
             webgazer.resume();
+            store_points_variable();
             // webgazer.showVideo(false);
         }, 1000);
         // if(mobilecheck()){
@@ -65,6 +66,7 @@ window.onload = async function() {
     function checkIfReady() {
         if (webgazer.isReady()) {
             setup();
+            SetFourSurface($("#plotting_canvas")[0]);
         } else {
             setTimeout(checkIfReady, 100);
         }
