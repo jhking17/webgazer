@@ -1,11 +1,42 @@
 body {
     min-width:600px!important;
 }
+.loading-square{
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 999; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    .loading-circle{
+        border: 16px solid #f3f3f3; /* Light grey */
+        border-top: 16px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+    }
+          
+    @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+    }
+}
 .Calibration{
     position : absolute;
     display: block;
-    left : 50%;
-    top : 50%;
+    bottom:10;
+    right:100;
+}
+.ShowVideoBtn{
+    position : absolute;
+    display: block;
+    bottom:10;
+    right:220;
 }
 /* Calibration point position */
 .time{

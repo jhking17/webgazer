@@ -4,7 +4,60 @@ window.mobilecheck = function() {
     return check;
 };
 
+window.requestAnimFrame = (function(callback) {
+    return window.requestAnimationFrame || 
+    window.webkitRequestAnimationFrame || 
+    window.mozRequestAnimationFrame || 
+    window.oRequestAnimationFrame || 
+    window.msRequestAnimationFrame ||
+    function(callback) { window.setTimeout(callback, 1000 / 60); };
+})();
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+window.setCookie = setCookie;
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return null;
+}
+window.getCookie = getCookie;
+
+window.localStorageRemove = function(key){
+    if(localStorage.getItem(key) !== null)
+        window.localStorage.removeItem(key);
+    
+}
+
+window.localStorageSet = function(key,data){
+    window.localStorage.setItem(key,JSON.stringify(data));
+}
+
+window.localStorageGet = function(key){
+    let data = window.localStorage.getItem(key);
+    console.log(data);
+    if(data !== null)
+        data = JSON.parse(data);
+    return data;
+}
+
 window.onload = async function() {
+    
+
     if(mobilecheck()){
         var points = $("#dot-img");
         for(var p of points){
@@ -13,7 +66,7 @@ window.onload = async function() {
         }
     }
     function Update(){
-        requestAnimationFrame(Update);
+        requestAnimFrame(Update);
         if(!webgazer.isReady())
             return ;
         // let pos = webgazer.getCurrentPrediction();
@@ -45,7 +98,7 @@ window.onload = async function() {
             camConstraints = { video: { width: { min: 320,max: 640 }, height: { min: 240,max: 480 }, facingMode: "user" } };
         webgazer.pause();
         if(window.mobilecheck && mobilecheck()){
-            webgazer.setVideoViewerSize(480, 640);
+            webgazer.setVideoViewerSize(360, 480);
         } else {
             webgazer.setVideoViewerSize(320,240);
         }

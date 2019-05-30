@@ -8,7 +8,9 @@ var endInspection= false;
 var startInspection = false;
 var endCalibration = false;
 var inspectionLinePos = [];
+var inspectionFeedbackPos = [];
 var inspectionPrecisionPos = {x: [], y : []};
+var inspectionDistance = 10;
 
 var plotting_canvas = null;
 var ctx = null;
@@ -27,19 +29,73 @@ var limitPos = {
 };
 
 $(document).ready(function(){
+  setTimeout(() => {
+    webgazerCheckData();
+  }, 1000);
   ClearCanvas();
   $(".Calibration")[0].style="display:block;position:absolute;";
-
+  $(".ShowVideoBtn").click(function(){
+    if(webgazer.params.showVideo){
+      webgazer.showVideo(false);
+      webgazer.showFaceOverlay(false);
+      webgazer.showFaceFeedbackBox(false);
+      webgazer.showPredictionPoints(false);
+    } else {
+      webgazer.showVideo(true);
+      webgazer.showFaceOverlay(true);
+      webgazer.showFaceFeedbackBox(true);
+      webgazer.showPredictionPoints(true);
+    }
+  })
   $(".Calibration").click(async function(){
     plotting_canvas = $("#plotting_canvas")[0];
     textEl = $("#now_pos")[0];
     circleEl = $("#eyeCircle")[0];
     SetFourSurface(plotting_canvas);
     ctx = plotting_canvas.getContext('2d');
+    if(window.mobilecheck && mobilecheck()){
+      webgazer.showVideo(false);
+      webgazer.showFaceOverlay(false);
+      webgazer.showFaceFeedbackBox(false);
+      webgazer.showPredictionPoints(false);
+    }
+
     ClearCalibration();
     UpdateCalibration();
     UpdateEyeCircle();
   });
+
+  function GetDistance(x1,y1,x2,y2){
+    let a = x1 - x2;
+    let b = y1 - y2;
+
+    let dist = Math.sqrt( Math.pow(a,2) + Math.pow(b,2));
+    return dist;
+  }
+  
+  function webgazerCheckData() {
+    if(webgazer !== undefined && webgazer.isReady() 
+      && webgazer.getRegression()[0].getData().length === 0
+      && localStorageGet("RegData") !== null){
+        GetRegDataStorage();
+    }
+  }
+
+  function SetRegDataStorage(){
+    let data = webgazer.getRegression()[0].getData();
+    window.localStorageSet("RegData",data);
+  }
+
+  function GetRegDataStorage(){
+    let data = window.localStorageGet("RegData");
+    console.log(data);
+    if(data === null)
+      return false;
+    webgazer.pause();
+    webgazer.getRegression()[0].setData(data);
+    webgazer.resume();
+    return true;
+  }
 
   function SetFourSurface(canvas){
     // let center = {x : canvas.width / 2, y : canvas.width / 2};
@@ -96,7 +152,7 @@ $(document).ready(function(){
     }, EyeCheckTime * 1000);
   }
   
-  async function InspectionCalibration(){
+  async function CalibrationInspector(){
     let controlPosX = 100;
     let controlPosY = 200;
     if(window.mobilecheck && mobilecheck()){
@@ -117,6 +173,13 @@ $(document).ready(function(){
       {x : width / 2 - controlPosX, y : height - controlPosY},
       {x : width - controlPosX, y : height - controlPosY}
     ];
+    inspectionFeedbackPos = [
+      {x : width / 4 - controlPosX, y : controlPosY},
+      {x : width / 2 - controlPosX, y : controlPosY},
+      {x : width / 2 - controlPosX, y : height / 2 - controlPosY},
+      {x : width / 2 - controlPosX, y : height - controlPosY},
+      {x : width - controlPosX, y : height - controlPosY}
+    ]
     limitPos = {
       min_x : controlPosX,
       max_x : width - controlPosX,
@@ -124,11 +187,11 @@ $(document).ready(function(){
       max_y : height - controlPosY
     }
     
-    ctx.beginPath();
     for(var p of inspectionLinePos){
       circleGhost.style.left = p.x - circleGhost.offsetWidth / 2;
       circleGhost.style.top = p.y - circleGhost.offsetHeight / 2;
       await sleep(2000);
+      ctx.beginPath();
       ctx.moveTo(controlPosX,controlPosY);
       ctx.strokeStyle = "white";
       ctx.lineWidth = 30;
@@ -136,6 +199,9 @@ $(document).ready(function(){
       ctx.stroke();
     }
     ctx.closePath();
+
+    SetRegDataStorage();
+
     textEl.innerText="원의 움직임을 10초안에 따라가주세요.";
     await sleep(1000);
     endInspection = true;
@@ -152,13 +218,22 @@ $(document).ready(function(){
     setTimeout(() => {
       clearInterval(interval);
       let precisionVal = 0;
+      $(".loading-square")[0].style.display = "block";
       for(var i=0;i<inspectionPrecisionPos["x"].length;i++){
-        console.log(".. ",inspectionPrecisionPos["x"][i], inspectionPrecisionPos["y"][i])
-        if(true) // if need...
-          precisionVal += 1;
+        for(var point of inspectionFeedbackPos){
+          let d = GetDistance(
+            inspectionPrecisionPos["x"][i], inspectionPrecisionPos["y"][i],
+            point.x, point.y)
+          if(parseInt(d) < inspectionDistance){
+            precisionVal += 1;
+            break;
+          }
+        }
       }
+      $(".loading-square")[0].style.display = "none";
       ClearCanvas();
-      textEl.innerText = (precisionVal / inspectionPrecisionPos["x"].length).toFixed(1) * 100 + "% finish";
+      textEl.innerText = 
+        (precisionVal / inspectionPrecisionPos["x"].length).toFixed(1) * 100 + "% finish";
       limitPos = {
         min_x : 0 + circleEl.offsetWidth,
         max_x : plotting_canvas.offsetWidth,
@@ -170,7 +245,8 @@ $(document).ready(function(){
   }
   
   async function UpdateCalibration(){
-    requestAnimationFrame(UpdateCalibration);
+    requestAnimFrame(UpdateCalibration);
+
     if(isCheck){
       $(`.Pt${PointCalibrate}`)[0].style="display: block;";
       $(".time")[0].style="display: block";
@@ -183,19 +259,8 @@ $(document).ready(function(){
       }, 50);
 
       startInspection = true;
-      // if(webgazer.params.showVideo === true){
-      //   webgazer.showVideo(false);
-      //   webgazer.showFaceOverlay(false);
-      //   webgazer.showFaceFeedbackBox(false);
-      //   webgazer.showPredictionPoints(false);
-      // } else {
-      //   webgazer.showVideo(true);
-      //   webgazer.showFaceOverlay(true);
-      //   webgazer.showFaceFeedbackBox(true);
-      //   webgazer.showPredictionPoints(true);
-      // }
 
-      InspectionCalibration();
+      CalibrationInspector();
     }
   
     if(isCheck && EyeCheckTime < 3 && EyeCheckTime > 1){
@@ -205,7 +270,7 @@ $(document).ready(function(){
   }
   
   function UpdateEyeCircle(){
-    requestAnimationFrame(UpdateEyeCircle);
+    requestAnimFrame(UpdateEyeCircle);
     
     if(endCalibration){
       let pos = webgazer.getCurrentPrediction();
@@ -280,7 +345,6 @@ $(document).ready(function(){
   }
   
   function ClearCalibration(){
-    window.localStorage.clear();
     endCalibration = false;
     PointCalibrate = startPoint;
     EyeCheckTime = 4;
