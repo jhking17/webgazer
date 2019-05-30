@@ -25,7 +25,7 @@ window.onload = async function() {
         // console.log(webgazer.getRegression()); //data insert
         // console.log(webgazer.getCurrentPrediction());
     }
-    Update();
+    // Update();
     webgazer.setRegression('ridge')
         .setTracker('clmtrackr')
         .setGazeListener(function(data, clock) {
@@ -33,7 +33,7 @@ window.onload = async function() {
         .begin()
         .showPredictionPoints(true);
 
-    var setup = function() {
+    function setup() {
         var canvas = document.getElementById("plotting_canvas");
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
@@ -41,7 +41,7 @@ window.onload = async function() {
         var camConstraints = null;
         if(window.mobilecheck && mobilecheck()){
             camConstraints = { video: {width: {min: 480 }, height: {min: 480 }, facingMode: "user" }};
-          } else 
+            } else 
             camConstraints = { video: { width: { min: 320,max: 640 }, height: { min: 240,max: 480 }, facingMode: "user" } };
         webgazer.pause();
         if(window.mobilecheck && mobilecheck()){
@@ -52,21 +52,11 @@ window.onload = async function() {
         webgazer.setCameraConstraints(camConstraints);
         setTimeout(() => {
             webgazer.resume();
-            store_points_variable();
-            // webgazer.showVideo(false);
         }, 1000);
-        // if(mobilecheck()){
-        //     webgazer.showVideo(false);
-        //     webgazer.showFaceOverlay(false);
-        //     webgazer.showFaceFeedbackBox(false);
-        //     webgazer.showPredictionPoints(false);
-        // }
     };
-
     function checkIfReady() {
         if (webgazer.isReady()) {
             setup();
-            SetFourSurface($("#plotting_canvas")[0]);
         } else {
             setTimeout(checkIfReady, 100);
         }

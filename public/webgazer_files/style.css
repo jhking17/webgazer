@@ -120,6 +120,11 @@ body {
   left: 25vw;
 }
 
+.ghost {
+  display: none;
+  opacity: 0.2f;
+}
+
 .circle {
   display: block;
   position: absolute;
