@@ -38,9 +38,11 @@ function getCookie(cname) {
 window.getCookie = getCookie;
 
 window.localStorageRemove = function(key){
-    if(localStorage.getItem(key) !== null)
+    if(localStorage.getItem(key) !== null){
         window.localStorage.removeItem(key);
-    
+        return true;
+    }
+    return false;
 }
 
 window.localStorageSet = function(key,data){
@@ -71,9 +73,9 @@ window.onload = async function() {
             return ;
         // let pos = webgazer.getCurrentPrediction();
         // if(pos !== null)
-        //     $("#now_pos")[0].innerText="x : "+pos.x+" y : "+pos.y;
+        //     $("#textDiv")[0].innerText="x : "+pos.x+" y : "+pos.y;
         // else 
-        //     $("#now_pos")[0].innerText="Not connect";
+        //     $("#textDiv")[0].innerText="Not connect";
 
         // console.log(webgazer.getRegression()); //data insert
         // console.log(webgazer.getCurrentPrediction());

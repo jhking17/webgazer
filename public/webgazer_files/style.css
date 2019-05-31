@@ -71,6 +71,13 @@ body {
   right: 220;
 }
 
+.DeleteDataBtn {
+  position: absolute;
+  display: block;
+  bottom: 36;
+  right: 220;
+}
+
 /* Calibration point position */
 .time {
   display: none;

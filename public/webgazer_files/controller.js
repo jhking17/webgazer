@@ -6,6 +6,7 @@ var isCheck = false;
 
 var endInspection= false;
 var startInspection = false;
+var step2Inspection = false;
 var endCalibration = false;
 var inspectionLinePos = [];
 var inspectionFeedbackPos = [];
@@ -17,6 +18,7 @@ var ctx = null;
 var textEl = null;
 var circleEl = null;
 
+var PredictionPosVal = 3; // getprediction pos count
 var pointList = [];
 var fourSurface = {1 : {}, 2:{},3:{},4:{}};
 var surfaceSize = {};
@@ -46,10 +48,14 @@ $(document).ready(function(){
       webgazer.showFaceFeedbackBox(true);
       webgazer.showPredictionPoints(true);
     }
-  })
+  });
+  $(".DeleteDataBtn").click(function(){
+    let res = RemoveRegDataStorage();
+    alert("result : ",res);
+  });
   $(".Calibration").click(async function(){
     plotting_canvas = $("#plotting_canvas")[0];
-    textEl = $("#now_pos")[0];
+    textEl = $("#textDiv")[0];
     circleEl = $("#eyeCircle")[0];
     SetFourSurface(plotting_canvas);
     ctx = plotting_canvas.getContext('2d');
@@ -63,6 +69,7 @@ $(document).ready(function(){
     ClearCalibration();
     UpdateCalibration();
     UpdateEyeCircle();
+    UpdateEyeCircleFourSurface();
   });
 
   function GetDistance(x1,y1,x2,y2){
@@ -88,13 +95,17 @@ $(document).ready(function(){
 
   function GetRegDataStorage(){
     let data = window.localStorageGet("RegData");
-    console.log(data);
     if(data === null)
       return false;
     webgazer.pause();
     webgazer.getRegression()[0].setData(data);
     webgazer.resume();
     return true;
+  }
+
+  function RemoveRegDataStorage(){
+    let result = window.localStorageRemove("RegData");
+    return result;
   }
 
   function SetFourSurface(canvas){
@@ -187,12 +198,12 @@ $(document).ready(function(){
       max_y : height - controlPosY
     }
     
+    ctx.beginPath();
+    ctx.moveTo(controlPosX,controlPosY);
     for(var p of inspectionLinePos){
       circleGhost.style.left = p.x - circleGhost.offsetWidth / 2;
       circleGhost.style.top = p.y - circleGhost.offsetHeight / 2;
       await sleep(2000);
-      ctx.beginPath();
-      ctx.moveTo(controlPosX,controlPosY);
       ctx.strokeStyle = "white";
       ctx.lineWidth = 30;
       ctx.lineTo(p.x,p.y);
@@ -201,10 +212,9 @@ $(document).ready(function(){
     ctx.closePath();
 
     SetRegDataStorage();
-
+    step2Inspection = true;
     textEl.innerText="원의 움직임을 10초안에 따라가주세요.";
     await sleep(1000);
-    endInspection = true;
     endCalibration = true;
 
     store_points_variable();
@@ -234,12 +244,16 @@ $(document).ready(function(){
       ClearCanvas();
       textEl.innerText = 
         (precisionVal / inspectionPrecisionPos["x"].length).toFixed(1) * 100 + "% finish";
+
+      alert((precisionVal / inspectionPrecisionPos["x"].length).toFixed(1) * 100 + "% finish");
+      
       limitPos = {
         min_x : 0 + circleEl.offsetWidth,
         max_x : plotting_canvas.offsetWidth,
         min_y : 0 + circleEl.offsetHeight,
         max_y : plotting_canvas.offsetHeight
       }
+      endInspection = true;
       // if game : go Game Tab
     }, 10000);
   }
@@ -257,9 +271,7 @@ $(document).ready(function(){
       setInterval(() => {
         SetFourSurfaceWithCenter();
       }, 50);
-
       startInspection = true;
-
       CalibrationInspector();
     }
   
@@ -268,11 +280,49 @@ $(document).ready(function(){
       webgazer.recordScreenPosition(parseInt(nowPoint.left), parseInt(nowPoint.top),'click');
     }
   }
-  
+
   function UpdateEyeCircle(){
+    // inspection
     requestAnimFrame(UpdateEyeCircle);
+    if(step2Inspection && !endInspection){
+      let pos = webgazer.getCurrentPrediction();
+      if(pos !== null){
+        pointList.push(pos);
+        if(pointList.length > PredictionPosVal){
+          var x = 0;
+          var y = 0;
+          for(var p of pointList){
+            x += p.x;
+            y += p.y;
+          }
+          x /= PredictionPosVal;
+          y /= PredictionPosVal;
+          circleEl.style.left = parseInt(x) - parseInt(circleEl.offsetWidth);
+          circleEl.style.top = parseInt(y) - parseInt(circleEl.offsetHeight);
+          let top = parseInt(circleEl.style.top);
+          let left = parseInt(circleEl.style.left);
+
+          if(top < limitPos.min_y + circleEl.offsetHeight)
+            circleEl.style.top = limitPos.min_y;
+          else if(top > limitPos.max_y - + circleEl.offsetHeight)
+            circleEl.style.top = limitPos.max_y;
+          if(left < limitPos.min_x + circleEl.offsetWidth)
+            circleEl.style.left = limitPos.min_x;
+          else if(left > limitPos.max_x - circleEl.offsetWidth)
+            circleEl.style.left = limitPos.max_x;
+        }
+      } else {
+        pointList = [];
+        textEl.innerText="Not connect";
+      }
+    }
+  }
+  
+  function UpdateEyeCircleFourSurface(){
+    // game
+    requestAnimFrame(UpdateEyeCircleFourSurface);
     
-    if(endCalibration){
+    if(endCalibration && endInspection){
       let pos = webgazer.getCurrentPrediction();
       if(pos !== null){
         let pos_stack = get_points();
@@ -326,7 +376,6 @@ $(document).ready(function(){
           circleEl.style.left = parseInt(circleEl.style.left) + circleMoveX;
           let top = parseInt(circleEl.style.top);
           let left = parseInt(circleEl.style.left);
-          // dont out rect
 
           if(top < limitPos.min_y + circleEl.offsetHeight)
             circleEl.style.top = limitPos.min_y;
@@ -337,9 +386,8 @@ $(document).ready(function(){
           else if(left > limitPos.max_x - circleEl.offsetWidth)
             circleEl.style.left = limitPos.max_x;
         }
-        // $("#now_pos")[0].innerText="x : "+pos_stack[0][49]+" y : "+pos_stack[1][49];
       } else {
-        // $("#now_pos")[0].innerText="Not connect";
+        textEl.innerText="Not connect";
       }
     }
   }
